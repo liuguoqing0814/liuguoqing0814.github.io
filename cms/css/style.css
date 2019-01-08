@@ -29,7 +29,7 @@
 		width: 100%;
 		height: 100%;
 		background: rgba(0,0,0,0.7);
-		padding: 50px 0;
+		padding: 60px 0;
 	}
 	#home h1{
 		font-weight: bold;
@@ -114,6 +114,7 @@
 	}
 	.fastener{
 		margin: 20px 0;
+		padding:  10px 20px;
 	}
 	.col-md-3{
 		margin-bottom: 30px;
@@ -167,6 +168,12 @@
 	#contact input[type="submit"]:hover{
 		background: rgb(44,142,120);
 		
+	}
+	footer{
+		font-weight: 400;
+		text-align: center;
+		line-height: 30px;
+		padding: 10px 0;
 	}
 /* 没有小于786px， 是因为Bootstrap3以移动端优先*/
 	/* 小屏幕 （平板，大于等于768px）*/	
