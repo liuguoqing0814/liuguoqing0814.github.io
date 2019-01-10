@@ -24,8 +24,8 @@
 					<ul class="nav navbar-nav">
 						<li><a href="index.html"><span class="glyphicon glyphicon-home"></span> 后台管理</a></li>
 						<li><a href="user_list.html"><span class="glyphicon glyphicon-user"></span> 用户管理</a></li>
-						<li><a href="content.html"><span class="glyphicon glyphicon-list-alt"></span> 内容管理</a></li>
-						<li class="active"><a href="tag.html"><span class="glyphicon glyphicon-tags"></span> 标签管理</a></li>
+						<li class="active"><a href="content.html"><span class="glyphicon glyphicon-list-alt"></span> 内容管理</a></li>
+						<li><a href="tag.html"><span class="glyphicon glyphicon-tags"></span> 标签管理</a></li>
 					</ul>
 					<ul class="nav navbar-nav navbar-right">
 						<li class="dropdown">
@@ -46,44 +46,36 @@
 				</div>
 			</div>
 		</nav>
+		
 		<div class="container loophole">
 			<div class="row">
-				<div class="col-md-12">
-					<div class="page-header">
-			 			<h1>TAG标签管理</h1>
+			 	<div class="col-md-2 ">
+			 		<div class="list-group">
+			 			<a href="content.html" class="list-group-item">管理文章</a>
+			 			<a href="content_post.html" class="list-group-item active">添加文章</a>
 			 		</div>
-			 		<div class="col-md-12">
-			 			<form>
-			 				<div class="col-md-10">
-			 					<input class="form-control" placeholder="输入标签" />
-			 				</div>
-			 				<div class="col-md-2">
-			 					<button type="submit" class="btn btn-default">添加</button>
-			 				</div>
-			 				
-			 			</form>
+			 	</div>
+			 	<div class="col-md-10">
+			 		<div class="page-header">
+			 			<h1>发布文章</h1>
 			 		</div>
-			 		<div class="col-md-12 taglist">
-			 			<div class="alert alert-success alert-dismissible pull-left" role="alert">
-						  	<button type="button" class="close" data-dismiss="alert" aria-label="Close">
-						  		<span aria-hidden="true">&times;</span>
-						  	</button>
-						  	<strong>Bootstrap</strong>
-						</div>
-						<div class="alert alert-info alert-dismissible pull-left" role="alert">
-						  	<button type="button" class="close" data-dismiss="alert" aria-label="Close">
-						  		<span aria-hidden="true">&times;</span>
-						  	</button>
-						  	<strong>html5</strong>
-						</div>
-						<div class="alert alert-danger alert-dismissible pull-left" role="alert">
-						  	<button type="button" class="close" data-dismiss="alert" aria-label="Close">
-						  		<span aria-hidden="true">&times;</span>
-						  	</button>
-						  	<strong>css3</strong>
-						</div>
-			 		</div>
-				</div>
+			 		<form action="#">
+			 			<div class="form-group">
+			 				<label>标题</label>
+			 				<input type="text" id="title" class="form-control" placeholder="请输入文章标题"/>
+			 			</div>
+			 			<div class="form-group">
+			 				<label>文章内容</label>
+			 				<textarea id="content" class="form-control"rows="15" cols="10" placeholder="请输入文章正文部分"></textarea>
+			 			</div>
+			 			<div class="checkbox">
+			 				<label class="">
+			 					<input type="checkbox"/>全局置顶
+			 				</label>
+			 				<button type="submit" class="btn btn-default pull-right">发布文章</button>
+			 			</div>
+			 		</form>
+			 	</div>
 			</div>
 		</div>
 	</body>

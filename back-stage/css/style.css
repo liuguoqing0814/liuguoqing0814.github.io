@@ -1,6 +1,45 @@
 body{
 	padding-top:50px ;
 }
-.col-md-12 {
-    padding: 20px;
+.loophole {
+    padding: 20px 15px;
+}
+.progress{
+	margin-bottom: 11px;
+}
+.wh64{
+    width: 64px;
+    height: 64px;
+    border-radius: 50%;
+    border: 1px solid #f60;
+}
+.mar_t15{
+	margin-top: 15px;
+}
+.page-header {
+	margin-top: 0;
+}
+.page-header h1{
+	margin: 0;
+	font-size: 16px;
+}
+.user_search{
+	padding: 10px;
+	border: 1px solid #ddd;
+	border-top: none;
+}
+input.form-control {
+    margin-bottom: 15px;
+}
+.taglist{
+	padding-top:15px ;
+	margin-left: 15px;
+}
+.taglist .alert{
+	margin: 0 10px 10px 0;
+}
+.footer{
+	font-weight: 400;
+	text-align: center;
+	padding: 20px;
 }
