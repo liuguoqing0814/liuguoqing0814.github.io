@@ -61,6 +61,11 @@ input.form-control {
 		.media-body p{
 			font-size: 12px;
 		}
+		table tr th{
+			overflow: hidden;
+			white-space: nowrap;
+			text-overflow: ellipsis;
+		}
 	}
 	
 	/* 中等屏幕 （桌面显示器，大于等于992px）*/	
