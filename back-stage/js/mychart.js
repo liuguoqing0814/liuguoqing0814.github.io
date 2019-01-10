@@ -3,8 +3,7 @@
 			type: 'line',
 			data: {
 				labels: ["周一","周二","周三","周四","周五","周六","周末"],
-				datasets: [
-				{
+				datasets: [{
 				//统计表的背景颜色
 					fillColor:"#ddd",
 				//统计表画笔颜色
@@ -19,50 +18,19 @@
 					pointHighlightStorke:"#000",
 				//Y坐标数据
 					data:[300,555,655,714,899,905,1000]
-				},
-				{
-					fillColor:"rgba(255,255,255,,0)",
-					strokeColor:"rgba(92,184,92,1)",
-					pointColor:"rgba(23,126,23,1)",
-					pointStorkeColor:"#fff",
-					pointHighlightFill:"#fff",
-					pointHighlightStorke:"rgba(151,187,205,1)",
-					data:[314,455,755,814,999,1000]
-				}
-		]
-			},
-			options: {
-				responsive: true,
-				title: {
-					display: true,
-					text: 'Chart.js Line Chart'
-				},
-				tooltips: {
-					mode: 'index',
-					intersect: false,
-				},
-				hover: {
-					mode: 'nearest',
-					intersect: true
-				},
-				scales: {
-					xAxes: [{
-						display: true,
-						scaleLabel: {
-							display: true,
-							labelString: 'Month'
-						}
-					}],
-					yAxes: [{
-						display: true,
-						scaleLabel: {
-							display: true,
-							labelString: 'Value'
-						}
-					}]
-				}
-			}
-		};
+					},
+					{
+						fillColor:"rgba(255,255,255,,0)",
+						strokeColor:"rgba(92,184,92,1)",
+						pointColor:"rgba(23,126,23,1)",
+						pointStorkeColor:"#fff",
+						pointHighlightFill:"#fff",
+						pointHighlightStorke:"rgba(151,187,205,1)",
+						data:[314,455,755,814,999,1000]
+					}
+				]},
+			
+			};
 
 		window.onload = function() {
 			var ctx = document.getElementById('canvas').getContext('2d');
