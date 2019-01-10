@@ -47,10 +47,17 @@ input.form-control {
 .taglist .alert{
 	margin: 0 10px 10px 0;
 }
-.footer{
+.dropdown-menu{
+	min-width: 80px;
+}
+.dropdown-menu li a{
+	padding: 3px 10px;
+}
+footer{
 	font-weight: 400;
 	text-align: center;
-	padding: 20px;
+	line-height: 30px;
+	padding: 10px 0;
 }
 /* 没有小于786px， 是因为Bootstrap3以移动端优先*/
 	/* 小屏幕 （平板，大于等于768px）*/	
