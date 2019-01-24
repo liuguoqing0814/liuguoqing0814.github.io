@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<title>用户管理</title>
+		<link rel="stylesheet" href="css/bootstrap.min.css" />
+		<link rel="stylesheet" href="css/style.css" />
+		<script src="js/jquery.min.js"></script>
+		<script src="js/bootstrap.min.js"></script>
+		<script type="text/javascript" src="js/ajax.js"></script>
+		<script>
+			window.onload = function() {
+
+				var urlOrder = "/testmr/Admin/Orders/GetPage?_dc=1548054604126&filter=%5B%7B%22type%22%3A%22string%22%2C%22field%22%3A%22orderStatus%22%2C%22value%22%3A%221%22%2C%22comparison%22%3A%22eq%22%7D%5D&page=1&start=0&limit=20&sort=%5B%7B%22property%22%3A%22OrderDate%22%2C%22direction%22%3A%22desc%22%7D%5D";
+
+				ajax(urlOrder, "get", function(txt) {
+
+					var result = JSON.parse(txt.replace(/new\sDate\((\d+)\)/g, "$1"));
+					var tbody = document.getElementById('tbody');
+
+					for(var i = 0; i < result.data.length; i++) {
+						debugger
+						var item = result.data[i];
+
+						var loginName = item.LoginName;
+						var userName = item.UserName;
+						if (loginName == null ) {
+							
+							loginName = "";
+						}
+						if (userName ==null) {
+							
+							userName = "";
+						}
+						var tr = '<tr><td>' +
+							item.OrderNo + '</td><td>' +
+							item.OrderQty + '</td><td>' +
+							item.ChannelName + '</td><td>补货</td><td>已提交</td><td>' +
+							item.OrderDate + '</td><td>' +
+							loginName + '</td><td>' +
+							userName + '</td><td><div role="presentation" class="dropdown"><button class=" btn btn-default dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">操作<span class="caret"></span></button><ul class="dropdown-menu"><li>' +
+							'<a href="javascript:void(0);" onclick="getEdit(' + item.Id + ')" role="button" class="compile">货品</a></li><li><a href="javascript:void(0);" onclick="getDelete(' + item.Id + ')" role="button" class="delete" >删除</a></li></ul></div></td></tr>';
+
+						tbody.innerHTML += tr;
+					}
+				})
+			}
+			//调用模态框
+			function getEdit(id) {
+
+				$('#compile').modal();
+
+				var urlitems = "/testmr/Admin/Orders/GetOrderGoodsPage?orderId=" + id + "&_dc=1548060134041&page=1&start=0&limit=25";
+
+				ajax(urlitems, "get", function(txt) {
+
+					var result = JSON.parse(txt.replace(/new\sDate\((-?\d+)\)/g, "$1"));
+
+					var detail = document.getElementById('detail')
+					detail.innerHTML = "";
+					for(var i = 0; i < result.data.length; i++) {
+
+						var items = result.data[i];
+						var tr = '<tr><td>' +
+							items.GoodsNo + '</td><td>' +
+							items.ColorNo + '</td><td>' +
+							items.ColorName + '</td><td>' +
+							items.SizeName + '</td><td>' +
+							items.Qty + '</td></tr>';
+
+						detail.innerHTML += tr;
+					}
+				})
+			}
+		</script>
+	</head>
+
+	<body>
+		<nav class="navbar navbar-default navbar-fixed-top">
+			<div class="container">
+				<div class="navbar-header">
+					<button class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+						<span class="icon-bar"></span>
+						<span class="icon-bar"></span>
+						<span class="icon-bar"></span>
+					</button>
+					<a href="index.html" class="navbar-brand">XXX 公司</a>
+				</div>
+				<div class="navbar-collapse collapse">
+					<ul class="nav navbar-nav">
+						<li role="presentation" class="dropdown active">
+							<a class="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
+								<span class="glyphicon glyphicon-home"></span> 默 认 <span class="caret">
+							</a>
+							<ul class="dropdown-menu">
+								<li><a href="#">ERP中的货品</a></li>
+								<li><a href="#">主题</a></li>
+								<li><a href="#">期货货品</a></li>
+								<li><a href="#">补货货品</a></li>
+								<li><a href="order.html">订单管理</a></li>
+							</ul>
+						</li>
+						<li role="presentation" class="dropdown">
+							<a class="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
+								<span class="glyphicon glyphicon-user"></span> 报表 <span class="caret">
+							</a>
+							<ul class="dropdown-menu">
+								<li><a href="#">品类分析</a></li>
+								<li><a href="#">上市日期分析</a></li>
+								<li><a href="#">订单分析</a></li>
+							</ul>
+						</li>
+						<li role="presentation" class="dropdown">
+							<a class="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
+								<span class="glyphicon glyphicon-list-alt"></span> 网站管理 <span class="caret">
+							</a>
+							<ul class="dropdown-menu">
+								<li><a href="#">栏 目 管 理</a></li>
+								<li><a href="#">文 章 管 理</a></li>
+								<li><a href="#">广 告 管 理</a></li>
+							</ul>
+						</li>
+						<li role="presentation" class="dropdown">
+							<a class="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
+								<span class="glyphicon glyphicon-tags"></span> 系统 <span class="caret">
+							</a>
+							<ul class="dropdown-menu"style="padding: 5px 8px;">
+								<li><a href="#">数据同步</a></li>
+								<li><a href="#">测试</a></li>
+								<li><a href="#">权限管理</a></li>
+								<li><a href="#">菜单管理</a></li>
+								<li><a href="#">角色管理</a></li>
+								<li><a href="#">组织管理</a></li>
+								<li><a href="user.html">用户管理</a></li>
+								<li><a href="#">系统管理</a></li>
+								<li><a href="log.html">日志管理</a></li>
+							</ul>
+						</li>
+						<li role="presentation" class="dropdown">
+							<a class="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
+								<span class="glyphicon glyphicon-tags"></span> 站内消息 <span class="caret">
+							</a>
+							<ul class="dropdown-menu">
+								<li><a href="#">收件箱</a></li>
+								<li><a href="#">发件箱</a></li>
+							</ul>
+						</li>
+					</ul>
+					<ul class="nav navbar-nav navbar-right">
+						<li class="dropdown">
+							<a id="dLabel" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+								admin
+								<span class="caret"></span>
+							</a>
+							<ul class="dropdown-menu" aria-labelledby="dLabel">
+								<li>
+									<a href=""><span class="glyphicon glyphicon-screenshot"></span> 前台首页</a>
+								</li>
+								<li>
+									<a href=""><span class="glyphicon glyphicon-user"></span> 个人主页</a>
+								</li>
+								<li>
+									<a href=""><span class="glyphicon glyphicon-cog"></span> 设置主页</a>
+								</li>
+								<li>
+									<a href=""><span class="glyphicon glyphicon-credit-card"></span> 账户中心</a>
+								</li>
+								<li>
+									<a href=""><span class="glyphicon glyphicon-heart"></span> 我的收藏</a>
+								</li>
+							</ul>
+						</li>
+						<li>
+							<a href="login.html"><span class="glyphicon glyphicon-off"></span> 退出</a>
+						</li>
+					</ul>
+				</div>
+			</div>
+		</nav>
+
+		<div class="container loophole">
+			<div class="row">
+				<div class="col-md-2 ">
+					<div class="list-group">
+						<a href="order.html" class="list-group-item active">订单管理</a>
+					</div>
+				</div>
+				<div class="col-md-10">
+					<div class="container-fluid">
+						<div class="row">
+							<div class="col-sm-3">
+								<div class="input-group">
+									<span class="input-group-addon" id="sizing-addon3">单号</span>
+									<input type="text" class="form-control" placeholder="" aria-describedby="sizing-addon2">
+								</div>
+							</div>
+							<div class="col-sm-3">
+								<div class="input-group">
+									<span class="input-group-addon" id="sizing-addon3">用户</span>
+									<input type="text" class="form-control" placeholder="" aria-describedby="sizing-addon2">
+								</div>
+							</div>
+							<div class="col-sm-3">
+								<div class="input-group">
+									<span class="input-group-addon" id="sizing-addon3">类型</span>
+									<input type="text" class="form-control" placeholder="" aria-describedby="sizing-addon2">
+								</div>
+							</div>
+							<div class="col-sm-3">
+								<div class="input-group">
+									<span class="input-group-addon" id="sizing-addon3">状态</span>
+									<input type="text" class="form-control" placeholder="" aria-describedby="sizing-addon2">
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="container-fluid" style="margin-top: 10px;">
+						<div class="row">
+							<div class="col-sm-3">
+								<div class="input-group">
+									<span class="input-group-addon" id="sizing-addon3">店铺</span>
+									<input type="text" class="form-control" placeholder="" aria-describedby="sizing-addon2">
+								</div>
+							</div>
+							<div class="col-sm-3">
+								<div class="input-group">
+									<span class="input-group-addon" id="sizing-addon3">日期</span>
+									<input type="text" class="form-control" placeholder="" aria-describedby="sizing-addon2">
+								</div>
+							</div>
+							<div class="col-sm-3">
+								<div class="input-group">
+									<span class="input-group-addon" id="sizing-addon3">至 </span>
+									<input type="text" class="form-control" placeholder="" aria-describedby="sizing-addon2">
+								</div>
+							</div>
+						</div>
+					</div>
+					<table class="table" style=" white-space:nowrap">
+						<thead>
+							<tr>
+								<th>订单编号</th>
+								<th>订单数量</th>
+								<th>店铺</th>
+								<th>类型</th>
+								<th>状态</th>
+								<th>下单时间</th>
+								<th>用户</th>
+								<th>用户名</th>
+								<th>操作</th>
+							</tr>
+						</thead>
+						<tbody id="tbody">
+
+						</tbody>
+					</table>
+					<nav class="pull-right" aria-label="Page navigation">
+						<ul id="pageUl" class="pagination">
+							<li>
+								<a href="#" aria-label="Previous">
+									<span aria-hidden="true">&laquo;</span>
+								</a>
+							</li>
+							<li>
+								<a href="#">1</a>
+							</li>
+							<li>
+								<a href="#">2</a>
+							</li>
+							<li>
+								<a href="#">3</a>
+							</li>
+							<li>
+								<a href="#">4</a>
+							</li>
+							<li>
+								<a href="#">5</a>
+							</li>
+							<li>
+								<a href="#" aria-label="Next">
+									<span aria-hidden="true">&raquo;</span>
+								</a>
+							</li>
+						</ul>
+					</nav>
+				</div>
+			</div>
+		</div>
+		<!-- 编辑用户 -->
+		<div class="modal fade" id="compile" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+			<div class="modal-dialog" role="document">
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+						<h4 class="modal-title" id="myModalLabel">货品明细</h4>
+					</div>
+					<div class="modal-body">
+						<table class="table" style=" white-space:nowrap">
+							<thead>
+								<tr>
+									<th>货号</th>
+									<th>颜色编号</th>
+									<th>颜色</th>
+									<th>尺码</th>
+									<th>数量</th>
+								</tr>
+							</thead>
+							<tbody id="detail">
+
+							</tbody>
+						</table>
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-info" data-dismiss="modal">关闭</button>
+					</div>
+				</div>
+			</div>
+		</div>
+		<footer>
+			<div class="container">
+				<div class="row">
+					<div class="col-md-12">
+						<span>------- 我是有底线的 -------</span>
+					</div>
+				</div>
+			</div>
+		</footer>
+	</body>
+
+</html>

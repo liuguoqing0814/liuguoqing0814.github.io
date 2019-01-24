@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<title>ajax</title>
+		<script type="text/javascript" src="js/ajax.js"></script>
+		<script>
+			window.onload = function() {
+
+				var oBtn = document.getElementById('btn');
+
+				oBtn.onclick = function() {
+
+					var user = document.getElementById('user').value;
+					var password = document.getElementById('password').value;
+
+					ajax("/testmr/Admin/Home/Login?LoginName=" + user + "&LoginPassword=" + password,
+						"post",
+						function(text) {
+							var result = JSON.parse(text);
+							if(result.success) {
+								location.href = "home.html";
+							} else {
+								alert(result.msg);
+							}
+						},
+						function() {
+							alert("error");
+						})
+				};
+			};
+		</script>
+	</head>
+
+	<body>
+		<input type="text" name="user" id="user" />
+		<input type="password" id="password" />
+		<input id="btn" type="button" value="读取" />
+	</body>
+
+</html>

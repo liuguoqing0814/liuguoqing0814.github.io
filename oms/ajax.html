@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<title>ajax</title>
+		<script>
+			window.onload = function() {
+
+				var oBtn = document.getElementById('btn');
+
+				oBtn.onclick = function() {
+
+					var user = document.getElementById('user').value;
+					var password = document.getElementById('password').value;
+
+					//1 创建Ajax对象
+					//兼容非IE6 浏览器
+					//var oAjax = new XMLHttpRequest();  //完成ajax请求
+					//IE6
+					//var oAjax = new ActiveXObject("Microsoft.XMLHTTP"); //来完成ajax请求
+
+					if(window.XMLHttpRequest) {
+
+						var oAjax = new XMLHttpRequest();
+					} else {
+						var oAjax = new ActiveXObject("Microsoft.XMLHTTP");
+					}
+
+					//2 连接服务器
+					//open(方法，文件名，异步传输)
+					//oAjax.open('GET','a.txt',true);
+					oAjax.open("Post", "/testmr/Admin/Home/Login?LoginName=" + user + "&LoginPassword=" + password, true);
+					debugger
+
+					//3 发送请求
+					oAjax.send();
+
+					//4 接受返回
+					oAjax.onreadystatechange = function() { //ajax与服务器交互的时候发生
+
+						//oAjax.readyState   //浏览器和服务器  进行到哪一步了
+						if(oAjax.readyState == 4) { //读取完成  完成不代表成功
+							// 0 (未初始化) 还没有调用open()方法
+							// 1 （载入） 已调用send（）方法， 正在发送请求
+							// 2 （载入完成）send（）方法完成，已收到全部响应内容
+							// 3 （解析）正在解析响应内容
+							// 4 （完成）响应内容解析完成，可以在客户端调用了
+							if(oAjax.status == 200) { //200代表成功
+								console.log(oAjax);
+								console.log('成功:' + oAjax.responseText); //从服务器发怂回来的那个文本
+								//alert(oAjax.responseText)
+								//location.href="/testmr/Admin/";
+
+								var result = JSON.parse(oAjax.responseText);
+
+								if(result.success) {
+									location.href = "home.html";
+								} else {
+									alert(result.msg);
+								}
+
+							} else {
+								console.log('失败：' + oAjax.status);
+							}
+						};
+					};
+				};
+			};
+		</script>
+	</head>
+
+	<body>
+		<input type="text" name="user" id="user" />
+		<input type="password" id="password" />
+		<input id="btn" type="button" value="读取" />
+	</body>
+
+</html>

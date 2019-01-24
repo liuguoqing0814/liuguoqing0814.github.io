@@ -1,0 +1,518 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<title>用户管理</title>
+		<link rel="stylesheet" href="css/bootstrap.min.css" />
+		<link rel="stylesheet" href="css/style.css" />
+		<script src="js/jquery.min.js"></script>
+		<script src="js/bootstrap.min.js"></script>
+		<script type="text/javascript" src="js/ajax.js"></script>
+		<script>
+			window.onload = function() {
+				getData(1);
+
+			}
+			//操作
+			function getEdit(id) {
+
+				$('#compile').modal();
+
+				var url = "/testmr/Admin/User/GetExtForm?id=" + id;
+
+				//编辑   
+				ajax(url, "post", function(txt) {
+
+					//console.log(txt);
+					var result = JSON.parse(txt.replace(/new\sDate\((\d+)\)/g, "$1"));
+
+					document.getElementById('name').value = result.data[0].LoginName;
+					document.getElementById('user').value = result.data[0].Name;
+					document.getElementById('password').value = result.data[0].LoginPwd;
+					document.getElementById('confirmPassword').value = result.data[0].LoginPwd;
+					document.getElementById('email').value = result.data[0].Email;
+					document.getElementById('userId').value = id;
+					loadTeam(result.data[0].TeamId); //调用loadTeam 方法   参数 ： result.data[0].TeamId  team团队id
+					loadRole(result.data[0].TeamId);
+
+					//确认
+					affirm.onclick = function() {
+
+						var id = document.getElementById('userId').value;
+
+						var loginame = document.getElementById('name').value
+						var name = document.getElementById('user').value
+						var LoginPwd = document.getElementById('password').value
+						var confirmPassword = document.getElementById('confirmPassword').value
+						var email = document.getElementById('email').value
+						var team = document.getElementById('selectTeam').value
+						var role = document.getElementById('Teamselect').value
+
+						var urlAffirm = "/testmr/Admin/User/Save?id=" + id +
+							"&LoginName=" + loginame +
+							"&Name=" + name +
+							"&Pwd=" + LoginPwd +
+							"&ConfirmLoginPwd=" + confirmPassword +
+							"&Email=" + email +
+							"&TeamID=" + team +
+							"&Roles=" + role;
+
+						ajax(urlAffirm, "post", function(txt) {
+
+							var result = JSON.parse(txt);
+							if(result.success) {
+
+								window.location.reload();
+							} else {
+								alert(result.msg);
+							}
+						})
+					}
+				})
+			}
+			//删除
+			function getDelete(id) {
+
+				var loginame = document.getElementById('name').value
+				var name = document.getElementById('user').value
+				var loginPwd = document.getElementById('password').value
+				var confirmPassword = document.getElementById('confirmPassword').value
+				var email = document.getElementById('email').value
+				var team = document.getElementById('selectTeam').value
+				var role = document.getElementById('Teamselect').value
+
+				var urlDelete = "/testmr/Admin/User/Delete?ids=" + id +
+					"&LoginName=" + loginame +
+					"&Name=" + name +
+					"&Pwd=" + loginPwd +
+					"&ConfirmLoginPwd=" + confirmPassword +
+					"&Email=" + email +
+					"&TeamID=" + team +
+					"&Roles=" + role;
+
+				if(window.confirm('确认删除?')) {
+
+					ajax(urlDelete, "post", function(txt) {
+
+						var result = JSON.parse(txt);
+						
+						if(result.success) {
+
+							window.location.reload();
+						} else {
+							alert(result.msg);
+						}
+					})
+				} 
+				else {
+
+					return false;
+				}
+
+			}
+			//用户列表  分页
+			function getData(page) {
+
+				var urlPage = "/testmr/Admin/User/GetPage?_dc=1547475845287&TeamID=-1&page=" +
+					page + "&start=0&limit=20";
+				ajax(urlPage, "get", function(txt) {
+
+					var pageSize = 10;
+					var result = JSON.parse(txt.replace(/new\sDate\((\d+)\)/g, "$1"));
+					var tbody = document.getElementById("tbody");
+					tbody.innerHTML = "";
+					for(var i = 0; i < result.data.length; i++) {
+
+						var item = result.data[i];
+
+						var tr = ' <tr><td>' +
+							item.Id + '</td><td>' +
+							item.LoginName + '</td><td>' +
+							item.Name + '</td><td>' +
+							item.Email + '</td><td><div role="presentation" class="dropdown"><button class=" btn btn-default dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">操作<span class="caret"></span></button><ul class="dropdown-menu"><li>' +
+							'<a href="javascript:void(0);" onclick="getEdit(' + item.Id + ')" role="button" class="compile">编辑</a></li><li><a href="javascript:void(0);" onclick="getDelete(' + item.Id + ')" role="button" class="delete" >删除</a></li></ul></div></td></tr>';
+
+						tbody.innerHTML += tr;
+
+					}
+
+					var pageTotal = Math.ceil(result.total / pageSize); //向上取整     有多少页
+					//分页页头
+					var previous = '<li><a onclick="getData(' + (page - 1) + ')" href="javascript:void(0);" aria-label="Previous"><span aria-hidden="true">&laquo;</span></a></li>';
+
+					if((page - 1) == 0) {
+
+						previous = '<li class="disabled"><span aria-label="Previous"><span aria-hidden="true">&laquo;</span></s></li>';
+					} //当激活页面为首页时，禁用页头
+					//分页
+					var li = "";
+					for(var i = 1; i <= pageTotal; i++) {
+
+						var active = page == i ? 'class="active"' : '';
+
+						li += '<li ' + active + '><a onclick="getData(' + i + ')" href="javascript:void(0);">' + i + '</a></li>';
+
+					}
+					//分页页尾
+					var next = '<li><a onclick="getData(' + (page + 1) + ')" href="javascript:void(0);" aria-label="Next"><span aria-hidden="true">&raquo;</span></a></li>';
+
+					if(page == pageTotal) {
+
+						next = '<li class="disabled"><span aria-label="Previous"><span aria-hidden="true">&laquo;</span></s></li>';
+					} //当激活页面  等于总页面，禁用页尾
+
+					document.getElementById('pageUl').innerHTML = previous + li + next; //三者相加 ，即为分页  完美
+				})
+			}
+			//角色
+			function loadRole(TeamId) {
+
+				var Teamselect = document.getElementById('Teamselect');
+
+				var size = Teamselect.options.length;
+				for(var i = 0; i < size; i++) {
+
+					Teamselect.options.remove(Teamselect.selectedIndex);
+				}
+
+				var urlRole = "/testmr/Admin/Role/GetAll?_dc=1547705755461&query=&page=1&start=0&limit=20&sort=%5";
+				ajax(urlRole, "get", function(txt) {
+
+					var result = JSON.parse(txt.replace(/new\sDate\((\d+)\)/g, "$1"));
+
+					for(var i = 0; i < result.data.length; i++) {
+
+						var option = document.createElement('option');
+						var role = result.data[i];
+
+						option.innerHTML = role.RoleName;
+						option.value = role.Id;
+						option.selected = role.Id == TeamId;
+						Teamselect.appendChild(option);
+					}
+				})
+			}
+			//所在团队
+			function loadTeam(teamId) {
+
+				var select = document.getElementById('selectTeam'); //获取id
+
+				console.log(select.options) //输入控制台
+
+				var size = select.options.length; //获取select.options 的个数
+				for(var i = 0; i < size; i++) { //遍历size=5
+
+					select.options.remove(select.selectedIndex); //把select.selectedIndex 索引删除
+				}
+
+				var urlOption = "/testmr/Admin/Team/GetList?_dc=1547649040514&node=root"; //url
+
+				ajax(urlOption, "get", function(txt) {
+
+					var result = JSON.parse(txt); //把对象转化为数组
+					//console.log(result.children);
+					//console.log(result);
+					for(var i = 0; i < result.children.length; i++) { //循环遍历result.children   节点个数
+
+						var team = result.children[i]; //
+
+						var option = document.createElement('option'); //生成一个option
+						option.innerHTML = team.TeamName; //赋值
+						option.value = team.Id; //把team的id 赋给option的value
+						option.selected = team.Id == teamId; //当team.Id等于teamTd  为true  就是显示当前当前你所在团队的职称                
+						select.appendChild(option); //添加option节点
+
+						for(var j = 0; j < team.children.length; j++) { //team.childdren  ==  result.children[i].childdren       
+							//树形结构     只有两个分支    添加递归
+							var teamChildren = team.children[j];
+							option = document.createElement('option');
+							option.value = teamChildren.Id;
+							option.selected = teamChildren.Id == teamId;
+							option.innerHTML = "|_" + teamChildren.TeamName;
+							select.appendChild(option);
+						}
+					}
+				})
+			}
+		</script>
+	</head>
+
+	<body>
+		<nav class="navbar navbar-default navbar-fixed-top">
+			<div class="container">
+				<div class="navbar-header">
+					<button class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+						<span class="icon-bar"></span>
+						<span class="icon-bar"></span>
+						<span class="icon-bar"></span>
+					</button>
+					<a href="index.html" class="navbar-brand">XXX 公司</a>
+				</div>
+				<div class="navbar-collapse collapse">
+					<ul class="nav navbar-nav">
+						<li role="presentation" class="dropdown">
+							<a class="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
+								<span class="glyphicon glyphicon-home"></span> 默 认 <span class="caret">
+							</a>
+							<ul class="dropdown-menu">
+								<li><a href="#">ERP中的货品</a></li>
+								<li><a href="#">主题</a></li>
+								<li><a href="#">期货货品</a></li>
+								<li><a href="#">补货货品</a></li>
+								<li><a href="order.html">订单管理</a></li>
+							</ul>
+						</li>
+						<li role="presentation" class="dropdown">
+							<a class="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
+								<span class="glyphicon glyphicon-user"></span> 报表 <span class="caret">
+							</a>
+							<ul class="dropdown-menu">
+								<li><a href="#">品类分析</a></li>
+								<li><a href="#">上市日期分析</a></li>
+								<li><a href="#">订单分析</a></li>
+							</ul>
+						</li>
+						<li role="presentation" class="dropdown">
+							<a class="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
+								<span class="glyphicon glyphicon-list-alt"></span> 网站管理 <span class="caret">
+							</a>
+							<ul class="dropdown-menu">
+								<li><a href="#">栏 目 管 理</a></li>
+								<li><a href="#">文 章 管 理</a></li>
+								<li><a href="#">广 告 管 理</a></li>
+							</ul>
+						</li>
+						<li role="presentation" class="dropdown active">
+							<a class="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
+								<span class="glyphicon glyphicon-tags"></span> 系统 <span class="caret">
+							</a>
+							<ul class="dropdown-menu"style="padding: 5px 8px;">
+								<li><a href="#">数据同步</a></li>
+								<li><a href="#">测试</a></li>
+								<li><a href="#">权限管理</a></li>
+								<li><a href="#">菜单管理</a></li>
+								<li><a href="#">角色管理</a></li>
+								<li><a href="#">组织管理</a></li>
+								<li><a href="user.html">用户管理</a></li>
+								<li><a href="#">系统管理</a></li>
+								<li><a href="log.html">日志管理</a></li>
+							</ul>
+						</li>
+						<li role="presentation" class="dropdown">
+							<a class="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
+								<span class="glyphicon glyphicon-tags"></span> 站内消息 <span class="caret">
+							</a>
+							<ul class="dropdown-menu">
+								<li><a href="#">收件箱</a></li>
+								<li><a href="#">发件箱</a></li>
+							</ul>
+						</li>
+					</ul>
+					<ul class="nav navbar-nav navbar-right">
+						<li class="dropdown">
+							<a id="dLabel" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+								admin
+								<span class="caret"></span>
+							</a>
+							<ul class="dropdown-menu" aria-labelledby="dLabel">
+								<li>
+									<a href=""><span class="glyphicon glyphicon-screenshot"></span> 前台首页</a>
+								</li>
+								<li>
+									<a href=""><span class="glyphicon glyphicon-user"></span> 个人主页</a>
+								</li>
+								<li>
+									<a href=""><span class="glyphicon glyphicon-cog"></span> 设置主页</a>
+								</li>
+								<li>
+									<a href=""><span class="glyphicon glyphicon-credit-card"></span> 账户中心</a>
+								</li>
+								<li>
+									<a href=""><span class="glyphicon glyphicon-heart"></span> 我的收藏</a>
+								</li>
+							</ul>
+						</li>
+						<li>
+							<a href="login.html"><span class="glyphicon glyphicon-off"></span> 退出</a>
+						</li>
+					</ul>
+				</div>
+			</div>
+		</nav>
+
+		<div class="container loophole">
+			<div class="row">
+				<div class="col-md-2 ">
+					<div class="list-group">
+						<a href="user_list.html" class="list-group-item active">用户管理</a>
+						<a href="user_search.html" class="list-group-item">用户搜索</a>
+						<a href="#myModal" id="add" role="button" class="list-group-item" data-toggle="modal" data-target="#myModal">添加用户</a>
+					</div>
+				</div>
+				<div class="col-md-10">
+					<div class="page-header">
+						<h1>用户管理</h1>
+					</div>
+					<ul class="nav nav-tabs">
+						<li class="active">
+							<a href="user_list.html">用户列表</a>
+						</li>
+					</ul>
+					<table class="table" style=" white-space:nowrap">
+						<thead>
+							<tr>
+								<th>ID</th>
+								<th class="hidden-xs">登录名</th>
+								<th>姓名</th>
+								<th>邮箱</th>
+								<th>操作</th>
+							</tr>
+						</thead>
+						<tbody id="tbody">
+
+						</tbody>
+					</table>
+					<nav class="pull-right" aria-label="Page navigation">
+						<ul id="pageUl" class="pagination">
+							<!--<li>
+								<a href="#" aria-label="Previous">
+									<span aria-hidden="true">&laquo;</span>
+								</a>
+							</li>
+							<li>
+								<a href="#">1</a>
+							</li>
+							<li>
+								<a href="#">2</a>
+							</li>
+							<li>
+								<a href="#">3</a>
+							</li>
+							<li>
+								<a href="#">4</a>
+							</li>
+							<li>
+								<a href="#">5</a>
+							</li>
+							<li>
+								<a href="#" aria-label="Next">
+									<span aria-hidden="true">&raquo;</span>
+								</a>
+							</li>-->
+						</ul>
+					</nav>
+				</div>
+			</div>
+		</div>
+
+		<!-- 编辑用户 -->
+		<div class="modal fade" id="compile" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+			<div class="modal-dialog" role="document">
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+						<h4 class="modal-title" id="myModalLabel">修改用户</h4>
+					</div>
+					<div class="modal-body">
+						<div class="form-group">
+							<label for="name">登录名</label>
+							<input type="texte" id="name" class="form-control" placeholder="请输入用户名">
+						</div>
+						<div class="form-group">
+							<label for="name">姓名</label>
+							<input type="texte" id="user" class="form-control" placeholder="请输入姓名">
+						</div>
+						<div class="form-group">
+							<label for="name">修改密码</label>
+							<input type="password" id="password" class="form-control" placeholder="请输入密码">
+						</div>
+						<div class="form-group">
+							<label for="name">确认密码</label>
+							<input type="password" id="confirmPassword" class="form-control" placeholder="请确认密码">
+						</div>
+						<div class="form-group">
+							<label for="name">邮箱</label>
+							<input type="texte" id="email" class="form-control" placeholder="请确认邮箱">
+						</div>
+						<div class="form-group">
+							<label for="name">所在团队</label>
+							<select id="selectTeam" style="width: 100%;height: 36px;border-radius:5px;">
+							</select>
+						</div>
+						<div class="form-group">
+							<label for="name">角色</label>
+							<select id="Teamselect" style="width: 100%;height: 36px;border-radius:5px;">
+							</select>
+						</div>
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+						<input type="hidden" id="userId" />
+						<button id="affirm" type="button" class="btn btn-primary">确认</button>
+					</div>
+				</div>
+			</div>
+		</div>
+		<!--添加用户-->
+		<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+			<div class="modal-dialog" role="document">
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+						<h4 class="modal-title" id="myModalLabel">添加用户</h4>
+					</div>
+					<div class="modal-body">
+						<div class="form-group">
+							<label for="name">登录名</label>
+							<input type="texte" id="name" class="form-control" placeholder="请输入用户名">
+						</div>
+						<div class="form-group">
+							<label for="name">姓名</label>
+							<input type="texte" id="user" class="form-control" placeholder="请输入用户名">
+						</div>
+						<div class="form-group">
+							<label for="uid">密码</label>
+							<input type="text" id="password" class="form-control" placeholder="请输入密码">
+						</div>
+						<div class="form-group">
+							<label for="name">确认密码</label>
+							<input type="texte" id="confirmPassword" class="form-control" placeholder="确定密码">
+						</div>
+						<div class="form-group">
+							<label for="uid">请输入邮箱</label>
+							<input type="text" id="emali" class="form-control" placeholder="请输入邮箱">
+						</div>
+						<div class="form-group">
+							<div class="form-group">
+								<label for="name">所在团队</label>
+								<select id="selectTeam" style="width: 100%;height: 36px;border-radius:5px;">
+								</select>
+							</div>
+							<div class="form-group">
+								<label for="name">角色</label>
+								<select id="Teamselect" style="width: 100%;height: 36px;border-radius:5px;">
+								</select>
+							</div>
+						</div>
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+						<input type="hidden" id="submitId" />
+						<button id="submit" type="button" class="btn btn-primary">提交</button>
+					</div>
+				</div>
+			</div>
+		</div>
+		<footer>
+			<div class="container">
+				<div class="row">
+					<div class="col-md-12">
+						<span>------- 我是有底线的 -------</span>
+					</div>
+				</div>
+			</div>
+		</footer>
+	</body>
+
+</html>

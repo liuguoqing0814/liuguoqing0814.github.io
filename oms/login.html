@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<title>login</title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no" />
+		<link rel="stylesheet" href="css/bootstrap.min.css" />
+		<link rel="stylesheet" href="css/login.css" />
+		<script src="js/bootstrap.min.js"></script>
+		<script src="js/jquery.min.js"></script>
+		<script type="text/javascript" src="js/ajax.js"></script>
+		<script>
+			window.onload = function() {
+
+				var oBtn = document.getElementById('btn');
+
+				oBtn.onclick = function() {
+
+					var user = document.getElementById('user').value;
+					var password = document.getElementById('password').value;
+
+					ajax("/testmr/Admin/Home/Login?LoginName=" + user + "&LoginPassword=" + password,
+						"post",
+						function(text) {
+							var result = JSON.parse(text);
+							if(result.success) {
+								location.href = "user.html";
+							} else {
+								alert(result.msg);
+							}
+						},
+						function() {
+							alert("error");
+						})
+				};
+			};
+		</script>
+	</head>
+
+	<body>
+		<div class="container">
+			<div class="row">
+				<div class="col-md-12">
+					<img class="img img-responsive" src="images/logo.png" alt="Responsive image" />
+				</div>
+			</div>
+		</div>
+		</div>
+		<div class="container">
+			<div class="row bg wow fadeInUp">
+				<div class="col-md-7 col-sm-7 col-xs-2"></div>
+				<div class="col-md-3 col-sm-3 col-xs-8">
+					<div class="box">
+						<div class="modal-body">
+							<div class="form-group">
+								<label for="name">账号</label>
+								<input type="texte" id="user" value="administrator" class="form-control" placeholder="请输入账号">
+							</div>
+							<div class="form-group">
+								<label for="uid">密码</label>
+								<input type="password" id="password" value="123456" class="form-control" placeholder="请输入密码">
+							</div>
+							<div class="modal-footer">
+								<input type="button" id="btn" class="btn btn-info btn-block" value="登录" />
+								<img src="images/QrCode.jpg" class="img-responsive" />
+							</div>
+						</div>
+					</div>
+					<div class="col-md-2 col-sm-2 col-xs-2"></div>
+				</div>
+			</div>
+		</div>
+	</body>
+</html>
