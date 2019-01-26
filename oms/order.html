@@ -20,17 +20,17 @@
 					var tbody = document.getElementById('tbody');
 
 					for(var i = 0; i < result.data.length; i++) {
-						debugger
+
 						var item = result.data[i];
 
 						var loginName = item.LoginName;
 						var userName = item.UserName;
-						if (loginName == null ) {
-							
+						if(loginName == null) {
+
 							loginName = "";
 						}
-						if (userName ==null) {
-							
+						if(userName == null) {
+
 							userName = "";
 						}
 						var tr = '<tr><td>' +
@@ -71,6 +71,109 @@
 
 						detail.innerHTML += tr;
 					}
+				})
+			}
+			//单号
+			function odd() {
+
+				var input = document.getElementById('odd');
+				var filter = input.value.toUpperCase();
+				var tbody = document.getElementById('tbody');
+				var tr = tbody.getElementsByTagName("tr");
+
+				for(i = 0; i < tr.length; i++) {
+
+					td = tr[i].getElementsByTagName("td")[0];
+
+					if(td) {
+
+						if(td.innerHTML.toUpperCase().indexOf(filter) > -1) {
+
+							tr[i].style.display = "";
+						} else {
+
+							tr[i].style.display = "none";
+						}
+					}
+				}
+			}
+			//用户
+			function user() {
+
+				var input = document.getElementById('user');
+				var filter = input.value.toUpperCase();
+				var tbody = document.getElementById('tbody');
+				var tr = tbody.getElementsByTagName("tr");
+
+				for(i = 0; i < tr.length; i++) {
+
+					td = tr[i].getElementsByTagName("td")[6];
+
+					if(td) {
+
+						if(td.innerHTML.toUpperCase().indexOf(filter) > -1) {
+
+							tr[i].style.display = "";
+						} else {
+
+							tr[i].style.display = "none";
+						}
+					}
+				}
+			}
+			//类型
+			function moldClick() {
+
+				var mold = document.getElementById('mold');
+
+				var size = mold.options.length;
+
+				for(var i = 0; i < size; i++) {
+
+					mold.options.remove(mold.selectedIndex);
+				}
+
+				var urlMold = "/testmr/Admin/Orders/GetItemDetails?code=order_type&_dc=1548503624648&page=1&start=0&limit=25&filter=%5B%7B%22property%22%3A%22ItemText%22%7D%5D";
+
+				ajax(urlMold, "get", function(txt) {
+
+					var result = JSON.parse(txt);
+
+					for(var i = 0; i < result.list.length; i++) {
+
+						var item = result.list[i];
+						var option = document.createElement('option');
+						option.innerHTML = item.ItemText;
+						mold.appendChild(option);
+					}
+				})
+			}
+			//状态
+			function stateClick(){
+				
+				var state = document.getElementById('state');
+				
+				var size = state.options.length;
+
+				for(var i = 0; i < size; i++) {
+
+					state.options.remove(state.selectedIndex);
+				}
+
+				var urlState = "/testmr/Admin/Orders/GetItemDetails?code=order_status&_dc=1548506479271&page=1&start=0&limit=25&filter=%5B%7B%22property%22%3A%22ItemText%22%7D%5D";
+
+				ajax(urlState, "get", function(txt) {
+
+					var result = JSON.parse(txt);
+
+					for(var i = 0; i < result.list.length; i++) {
+
+						var item = result.list[i];
+						var option = document.createElement('option');
+						option.innerHTML = item.ItemText;
+						option.value = item.ItemValue;	
+						state.appendChild(option);
+					}	
 				})
 			}
 		</script>
@@ -192,25 +295,29 @@
 							<div class="col-sm-3">
 								<div class="input-group">
 									<span class="input-group-addon" id="sizing-addon3">单号</span>
-									<input type="text" class="form-control" placeholder="" aria-describedby="sizing-addon2">
+									<input type="text" id="odd" onkeyup="odd(),value=value.replace(/[^\d]/g,'')" class="form-control" placeholder="" aria-describedby="sizing-addon2">
 								</div>
 							</div>
 							<div class="col-sm-3">
 								<div class="input-group">
 									<span class="input-group-addon" id="sizing-addon3">用户</span>
-									<input type="text" class="form-control" placeholder="" aria-describedby="sizing-addon2">
+									<input type="text" id="user" onkeyup="user(),value=value.replace(/[^\d]/g,'')" class="form-control" placeholder="" aria-describedby="sizing-addon2">
 								</div>
 							</div>
 							<div class="col-sm-3">
 								<div class="input-group">
 									<span class="input-group-addon" id="sizing-addon3">类型</span>
-									<input type="text" class="form-control" placeholder="" aria-describedby="sizing-addon2">
+									<select id="mold" onclick="moldClick()" style="width: 100%;height: 34px;border: 1px solid #CCCCCC;">
+
+									</select>
 								</div>
 							</div>
 							<div class="col-sm-3">
 								<div class="input-group">
 									<span class="input-group-addon" id="sizing-addon3">状态</span>
-									<input type="text" class="form-control" placeholder="" aria-describedby="sizing-addon2">
+									<select id="state" onclick="stateClick()" style="width: 100%;height: 34px;border: 1px solid #CCCCCC;">
+
+									</select>
 								</div>
 							</div>
 						</div>

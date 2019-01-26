@@ -198,19 +198,20 @@
 
 				var select = document.getElementById('selectTeam'); //获取id
 
-				console.log(select.options) //输入控制台
+				//console.log(select.options) //输入控制台
 
 				var size = select.options.length; //获取select.options 的个数
+				
 				for(var i = 0; i < size; i++) { //遍历size=5
 
 					select.options.remove(select.selectedIndex); //把select.selectedIndex 索引删除
-				}
+				}//避免重复出现
 
 				var urlOption = "/testmr/Admin/Team/GetList?_dc=1547649040514&node=root"; //url
 
 				ajax(urlOption, "get", function(txt) {
 
-					var result = JSON.parse(txt); //把对象转化为数组
+					var result = JSON.parse(txt); //把字符串转变为对象
 					//console.log(result.children);
 					//console.log(result);
 					for(var i = 0; i < result.children.length; i++) { //循环遍历result.children   节点个数
@@ -270,7 +271,7 @@
 							<ul class="dropdown-menu">
 								<li><a href="#">品类分析</a></li>
 								<li><a href="#">上市日期分析</a></li>
-								<li><a href="#">订单分析</a></li>
+								<li><a href="order.html">订单分析</a></li>
 							</ul>
 						</li>
 						<li role="presentation" class="dropdown">

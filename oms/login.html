@@ -20,7 +20,7 @@
 					var user = document.getElementById('user').value;
 					var password = document.getElementById('password').value;
 
-					ajax("http://order.interestpay.cn/testmr/Admin/Home/Login?LoginName=" + user + "&LoginPassword=" + password,
+					ajax("/testmr/Admin/Home/Login?LoginName=" + user + "&LoginPassword=" + password,
 						"post",
 						function(text) {
 							var result = JSON.parse(text);
