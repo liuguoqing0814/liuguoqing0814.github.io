@@ -23,13 +23,15 @@
 			//订单
 			function getpage(page){
 				
-				var urlOrder = "/testmr/Admin/Orders/GetPage?_dc=1548054604126&filter=%5B%7B%22type%22%3A%22string%22%2C%22field%22%3A%22orderStatus%22%2C%22value%22%3A%221%22%2C%22comparison%22%3A%22eq%22%7D%5D&page=1&start=0&limit=20&sort=%5B%7B%22property%22%3A%22OrderDate%22%2C%22direction%22%3A%22desc%22%7D%5D";
+				var urlOrder = "/testmr/Admin/Orders/GetPage?_dc=1548054604126&filter=%5B%7B%22type%22%3A%22string%22%2C%22field%22%3A%22orderStatus%22%2C%22value%22%3A%221%22%2C%22comparison%22%3A%22eq%22%7D%5D&page=" + 
+				page + "&start=0&limit=20&sort=%5B%7B%22property%22%3A%22OrderDate%22%2C%22direction%22%3A%22desc%22%7D%5D";
 
 				ajax(urlOrder, "get", function(txt) {
 					
 					var pageSize = 20;
 					var result = JSON.parse(txt.replace(/new\sDate\((\d+)\)/g, "$1"));
 					var tbody = document.getElementById('tbody');
+					tbody.innerHTML = "";
 					//订单
 					for(var i = 0; i < result.data.length; i++) {
 
@@ -83,7 +85,7 @@
 					}
 					var pageTotal = Math.ceil(result.total / pageSize);		//向上取整
 					//分页页头
-					var previous = '<li><a onclick="getData(' + (page - 1) + ')" href="javascript:void(0);" aria-label="Previous"><span aria-hidden="true">&laquo;</span></a></li>';
+					var previous = '<li><a onclick="getpage(' + (page - 1) + ')" href="javascript:void(0);" aria-label="Previous"><span aria-hidden="true">&laquo;</span></a></li>';
 
 					if((page - 1) == 0) {
 
@@ -95,11 +97,11 @@
 
 						var active = page == i ? 'class="active"' : '';
 
-						li += '<li ' + active + '><a onclick="getData(' + i + ')" href="javascript:void(0);">' + i + '</a></li>';
+						li += '<li ' + active + '><a onclick="getpage(' + i + ')" href="javascript:void(0);">' + i + '</a></li>';
 
 					}
 					//分页页尾
-					var next = '<li><a onclick="getData(' + (page + 1) + ')" href="javascript:void(0);" aria-label="Next"><span aria-hidden="true">&raquo;</span></a></li>';
+					var next = '<li><a onclick="getpage(' + (page + 1) + ')" href="javascript:void(0);" aria-label="Next"><span aria-hidden="true">&raquo;</span></a></li>';
 
 					if(page == pageTotal) {
 
@@ -208,7 +210,7 @@
 				url += '{"type":"string","field":"orderNo","value":"' + orderNo + '","comparison":"eq"},';
 				url += '{"type":"string","field":"u.LoginName","value":"' + loginName + '","comparison":"eq"},';
 				url += '{"type":"string","field":"orderType","value":"' + mold + '","comparison":"eq"},';
-				url += '{"type":"string","field":"orderStatus","value":"' + state + '","comparison":"eq"},';
+				url += '{"type":"string","field":"orderStatus","value":"' + 1 + '","comparison":"eq"},';
 				url += '{"type":"string","field":"c.Name,c.channelno","value":"' + shop + '","comparison":"eq"},';
 				url += '{"type":"string","field":"orderDate","value":"' + datetime + '","comparison":"eq"},';
 				url += '{"type":"string","field":"orderDate","value":"' + date + '","comparison":"eq"}]';
@@ -420,13 +422,13 @@
 							<div class="col-sm-3">
 								<div class="input-group">
 									<span class="input-group-addon" id="sizing-addon3">用户</span>
-									<input type="text" id="user" onkeyup="value=value.replace(/[^\d]/g,'')" class="form-control" placeholder="" aria-describedby="sizing-addon2">
+									<input type="text" id="user" onkeyup="value=value.replace(/[\W]/g,'')" class="form-control" placeholder="" aria-describedby="sizing-addon2">
 								</div>
 							</div>
 							<div class="col-sm-3">
 								<div class="input-group">
 									<span class="input-group-addon" id="sizing-addon3">类型</span>
-									<select id="mold" onclick="moldClick()" style="width: 100%;height: 34px;border: 1px solid #CCCCCC;">
+									<select id="mold" onclick="moldClick()" value="1" style="width: 100%;height: 34px;border: 1px solid #CCCCCC;">
 
 									</select>
 								</div>
@@ -435,7 +437,7 @@
 								<div class="input-group">
 									<span class="input-group-addon" id="sizing-addon3">状态</span>
 									<select id="state" onclick="stateClick()" style="width: 100%;height: 34px;border: 1px solid #CCCCCC;">
-
+										
 									</select>
 								</div>
 							</div>
