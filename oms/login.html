@@ -19,10 +19,10 @@
 
 					var user = document.getElementById('user').value;
 					var password = document.getElementById('password').value;
-
-					ajax("/testmr/Admin/Home/Login?LoginName=" + user + "&LoginPassword=" + password,
-						"post",
-						function(text) {
+					
+					var url = "/testmr/Admin/Home/Login?LoginName=" + user + "&LoginPassword=" + password ;
+					
+					ajax(url,"post",function(text) {
 							var result = JSON.parse(text);
 							if(result.success) {
 								location.href = "user.html";

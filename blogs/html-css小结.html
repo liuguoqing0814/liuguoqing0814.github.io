@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>html-css小结</title>
+		<link rel="stylesheet" type="text/css" href="header.css" />
+		<link rel="stylesheet" type="text/css" href="nav.css" />
+		<link rel="stylesheet" type="text/css" href="sidebar.css" />
+		<style>
+			.main{
+				width:1000px;
+				height:4500px;
+				margin:auto;
+			}
+			.content{
+				width:670px;
+				height:1000px;
+				margin-top:30px;
+				float:left;
+			}
+			.caption{
+				width:670px;
+				height:40px;
+				border-bottom: 2px solid #2E3F97;
+			}
+			.caption p{
+				width:150px;
+				height:40px;
+				line-height: 40px;
+				font-family: "微软雅黑";
+				font-size: 18px;
+				color:#000;
+				float: left;
+			}
+			.caption span{
+				width:100px;
+				height:40px;
+				line-height: 40px;
+				font-family: "微软雅黑";
+				font-size: 15px;
+				color:#999;
+			}
+			.caption span a{
+				text-decoration: none;
+				font-family: "微软雅黑";
+				font-size: 15px;
+				color:#666;
+			}
+			.caption span a:hover{
+				color: #000;
+			}
+			.article01{
+				width:670px;
+				height:500px;
+				margin-top:30px;
+			}
+			.article01 h2{
+				width:670px;
+				font-family: "微软雅黑";
+				font-size: 20px;
+				font-weight: bold;
+				color:#000;
+			}
+			.article01 span{
+				margin-left: 10px;
+				line-height: 30px;
+			 	padding-left: 20px;
+			 	font-size: 12px;
+			 	font-family: "微软雅黑";
+			 	color:#999;
+			}
+			.mr01{
+				background: url("images/author2-01.jpg") no-repeat left center;
+			}
+			.mr02{
+				background: url("images/author2-02.jpg") no-repeat left center;
+			}
+			.article01 p{
+				line-height: 40px;
+				font-family: "微软雅黑";
+				font-size: 15px;
+				color:#666;
+			}
+			.article01 img{
+				width:670px;
+				height:400px;
+			}
+			.article01 p a{
+				font-family: "微软雅黑";
+				font-size: 15px;
+				color:#666;
+			}
+			.article01 p a:hover{
+				color: #000;
+			}
+		</style>
+	</head>
+	<body>
+		<div class="header">
+			<!--<div class="head">
+				<div class="welcome">
+					<a href="#">Home</a>
+					<a href="#">我的主页</a>
+				</div>
+			</div>-->
+			<img src="images/001.jpg" />
+		</div>
+		<div class="nav">
+			<ul>
+				<li><a  href="首页.html">首页</a></li>
+				<li><a  href="技术分享.html">技术分享</a></li>
+				<li><a  href="个人归档.html">个人归档</a></li>
+				<li><a  href="旅游日记.html">旅游日记</a></li>
+				<li><a  href="留言板.html">留言板</a></li>
+				<li><a  href="我的主页.html">我的主页</a></li>
+			</ul>
+		</div>
+		<div class="main">
+			<div class="content">
+				<div class="caption">
+				 	<p>您现在的位置是：</p>
+				 	<span><a href="技术分享.html">技术分享  </a>></span>
+				 	<span>html-css小结 </span>
+				</div>
+				<div class="article01">
+				 	<h2>html-css基础小结</h2>
+				 	<span class="mr01">陌然</span>
+				 	<span class="mr02">2018-10-21 21:11</span>
+				 	<p>一、HTML 详解</p>
+				 	<p>1、HTML 指的是超文本标记语言 (Hyper Text Markup Language)</p>
+				 	<p>- HTML 不是一种编程语言，而是一种标记语言 (markup language)</p>
+				 	<p>- 标记语言是一套标记标签 (markup tag)</p>
+				 	<p>总结： HTML 作用就是用标记标签来描述网页，把网页内容在浏览器中展示出来。</p>
+				 	<p>2、字符集（charset）</p>
+				 	<p>- gb2312 简单中文 包括6763个汉字</p>
+				 	<p>- BIG5 繁体中文 港澳台等用</p>
+				 	<p>- GBK包含全部中文字符 是GB2312的扩展，加入对繁体字的支持，兼容GB2312</p>
+				 	<p>- UTF-8则包含全世界所有国家需要用到的字符</p>
+				 	<p>3、标题标签 </p>
+				 	<p>- head 头部  标题 title 文档标题  &lt;h1&gt;、&lt;h2&gt;、&lt;h3&gt;、&lt;h4&gt;、&lt;h5&gt;和&lt;h6&gt;</p>
+				 	<p>注意： h1 标签因为重要，尽量少用。 一般h1 都是给logo使用，或者页面中最重要标题信息。</p>
+				 	<p>4、段落标签 <p> </p>
+				 	<p>- 水平线标签  &lt;hr /&gt;</p>
+				 	<p>- 换行标签  &lt;br /&gt;</p>
+				 	<p>- div span标签</p>
+				 	<p>- 文本格式化标签  &nbsp; bisu 只有使用 没有 强调的意思 strong em del ins 语义更强烈</p>
+				 	<p>- 图像标签img  &lt;img src="图像URL" /&gt;</p>
+				 	<p>- 链接标签 &lt;a href="跳转目标" target="目标窗口的弹出方式"&gt;文本或图像&lt;/a&gt;"</p>
+				 	<p> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+				 		_self为默认值，_blank为在新窗口中打开方式</p>
+				 	<p> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+				 		base 标签   base 写到 &lt;head&gt;&lt;/head&gt; 之间</p>
+				 	<p> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+				 		把所有的连接 都默认添加 target="_blank"</p>
+				 	<img src="images/ts02.jpg" />
+				 	<p>5、列表标签</p>
+				 	<p> &nbsp; &nbsp; &nbsp;无序列表 ul</p>
+				 	<p> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+				 		(1). &lt;ul&gt;&lt;/ul&gt;中只能嵌套&lt;li&gt;&lt;/li&gt;</p>
+				 	<p> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+				 		直接在&lt;ul&gt;&lt;/ul&gt;标签中输入其他标签或者文字的做法是不被允许的。</p>
+				 	<p> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+				 		(2).  &lt;li&gt;与&lt;/li&gt;之间相当于一个容器，可以容纳所有元素。
+				 	</p>
+				 	<p> &nbsp; &nbsp; &nbsp;有序列表 ol（少用）</p>
+				 	<p> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+				 		表格 table   caption 元素定义表格标题  （caption 标签必须紧随 table 标签之后。您只能对每个表格定义一个标题。
+				 		通常这个标题会被居中于表格之上）</p>
+				 	<p> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+				 		 合并单元格  &nbsp; &nbsp; 跨行合并：rowspan &nbsp; &nbsp; 跨列合并：colspan &nbsp; &nbsp; &nbsp;  colspan=3合并三列  
+				 	</p>
+				 	<P>6、表单标签  </P>
+				 	<P> &nbsp; &nbsp; &nbsp;input控件</P>
+				 	<P> &nbsp; &nbsp; &nbsp;label标签   作用： 用于绑定一个表单元素, 当点击label标签的时候, 被绑定的表单元素就会获得输入焦点（出现光标）</P>
+				 	<P>二、CSS规范</P>
+				 	<P>1、css选择器</P>
+				 	<P> &nbsp; &nbsp; &nbsp;(1). 长名称或词组可以使用中横线来为选择器命名。</P>
+				 	<p> &nbsp; &nbsp; &nbsp;(2). 不建议使用“_”下划线来命名CSS选择器。</p>
+				 	<p> &nbsp; &nbsp; &nbsp;(3). 不要纯数字、中文等命名， 尽量使用英文字母来表示</p>
+				 	<p>2、通配符选择器用“*”号表示，他是所有选择器中作用范围最广的，能匹配页面中所有的元素。</p>
+				 	<p> &nbsp; &nbsp; &nbsp;在开始的时候，我们可以进行设置，取消原有的一系列默认的padding等值</p>
+				 	<p>3、font_family </p>
+				 	<p> &nbsp; &nbsp; &nbsp;(1). 现在网页中普遍使用14px+。</p>
+				 	<p> &nbsp; &nbsp; &nbsp;(2). 尽量使用偶数的数字字号。ie6等老式浏览器支持奇数会有bug。</p>
+				 	<p> &nbsp; &nbsp; &nbsp;(3). 各种字体之间必须使用英文状态下的逗号隔开。</p>
+				 	<p> &nbsp; &nbsp; &nbsp;(4). 中文字体需要加英文状态下的引号，英文字体一般不需要加引号。当需要设置英文字体时，英文字体名必须位于中文字体名之前。</p>
+				 	<p> &nbsp; &nbsp; &nbsp;(5). 如果字体名中包含空格、#、$等符号，则该字体必须加英文状态下的单引号或双引号，例如font-family: "Times New Roman";。</p>
+				 	<p> &nbsp; &nbsp; &nbsp;(6). 尽量使用系统默认字体，保证在任何用户的浏览器中都能正确显示。</p>
+				 	<p>4、 字体粗细  </p>
+				 	<p> &nbsp; &nbsp; &nbsp;font-weight属性用于定义字体的粗细，其可用属性值：normal、bold、bolder、lighter、100~900（100的整数倍）。</p>
+				 	<p> &nbsp; &nbsp; &nbsp;数字 400 等价于 normal，而 700 等价于 bold</p>
+				 	<P>5、字体风格</P>
+				 	<P> &nbsp; &nbsp; &nbsp;font-style属性  normal：默认值，浏览器会显示标准的字体样式。</P>
+				 	<P> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+				 		italic：浏览器会显示斜体的字体样式。</P>
+				 	<P> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+				 		oblique：浏览器会显示倾斜的字体样式。</P>
+				 	<P>6、text-indent:首行缩进</P>
+				 	<P> &nbsp; &nbsp; &nbsp;text-indent属性用于设置首行文本的缩进，其属性值可为不同单位的数值、em字符宽度的倍数、或相对于浏览器窗口宽度的百分比%，允许使用负值, 建议使用em作为设置单位。</P>
+				 	<P>7、选择符合选择器</P>
+				 	<P> &nbsp; &nbsp; &nbsp;（1）交集选择器 标签＋class(或id)  中间没有空      不常用</P>
+				 	<P> &nbsp; &nbsp; &nbsp;（2）并集选择器   逗号 隔开   </P>
+				 	<P> &nbsp; &nbsp; &nbsp;（3）后代选择器（包含选择器） 空格隔开  </P>
+				 	<P> &nbsp; &nbsp; &nbsp;（4）子元素选择器只选择亲儿子      >隔开 </P>
+				 	<P> &nbsp; &nbsp; &nbsp;（5）伪类选择器     </P>
+				 	<P> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+				 		- :link /* 未访问的链接 */</P>
+				 	<P> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+				 		- :visited /* 已访问的链接 */
+				 	</P>
+				 	<P> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+				 		- :hover /* 鼠标移动到链接上 */
+				 	</P>
+				 	<P> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+				 		- :active /* 选定的链接 */
+				 	</P>
+				 	<P>8、块级元素和行内元素、行内块元素的区别</P>
+				 	<P> &nbsp; &nbsp; &nbsp;块级元素的特点：&lt;h1&gt;~&lt;h6&gt; &lt;p&gt; &lt;div&gt;
+				 		&lt;ul&gt; &lt;ol&gt; &lt;li&gt;
+				 	</P>
+				 	<P> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;(1)总是从新行开始</p>
+				 	<P> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;(2)高度，行高、外边距以及内边距都可以控制。</p>
+				 	<P> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;(3)宽度默认是容器的100%</p>
+				 	<P> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;(4)可以容纳内联元素和其他块元素。</p>			
+				 	<P> &nbsp; &nbsp; &nbsp;行内元素的特点：&lt;a&gt; &lt;strong&gt; &lt;b&gt; &lt;em&gt;
+				 		&lt;i&gt; &lt;del&gt; &lt;s&gt; &lt;ins&gt; &lt;u&gt; &lt;span&gt;</p>	
+				 	<P> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;(1)和相邻行内元素在一行上。</p>
+				 	<P> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;(2)高、宽无效，但水平方向的padding和margin可以设置，垂直方向的无效。</p>
+				 	<P> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;(3)默认宽度就是它本身内容的宽度。</p>
+				 	<P> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;(4)行内元素只能容纳文本或则其他行内元素。</p>
+				 	<P> &nbsp; &nbsp; &nbsp;行内块元素的特点：&lt;img/&gt; &lt;input/&gt; &lt;td&gt;</p>
+				 	<P> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;(1)和相邻行内元素（行内块）在一行上,但是之间会有空白缝隙。</p>
+				 	<P> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;(2)默认宽度就是它本身内容的宽度。</p>
+				 	<P> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;(3)高度，行高、外边距以及内边距都可以控制。</p>
+				 	<P> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;我们可以通过标签显示模式转换 display</p>
+				 	<P> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;块转行内：display:inline;</p>
+				 	<P> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;行内转块：display:block;</p>
+				 	<P> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;块、行内元素转换为行内块： display: inline-block;</p>
+					<p>注：详情可见 &nbsp; <a href="http://www.w3school.com.cn/"> &nbsp;http://www.w3school.com.cn/</a></p>
+				</div>
+			</div>
+			<div class="sidebar">
+				<div class="subNav">
+					<!--子导航-->
+					<ul>
+						<li><a href="关于博主.html">关于博主</a></li>
+						<li><a href="技术分享.html">技术分享</a></li>
+						<li><a href="个人归档.html">个人归档</a></li>
+						<li><a href="旅游日记.html">旅游日记</a></li>
+						<li><a href="留言板.html">你的留言</a></li>
+						<li><a href="相册.html">相册日记</a></li>
+					</ul>
+				</div>
+				<div class="noUmd">
+					<!--最新内容-->
+					<h2>最新内容</h2>
+					<ul>
+						<li> • <a href="关于博主.html">关于博主</a></li>
+						<li> • <a href="article01.html"> 磨 基 山</a></li>
+						<li> • <a href="北疆之旅.html">北疆之旅</a></li>
+						<li> • <a href="html-css小结.html">html-css小结</a></li>
+						<li> • <a href="#"></a></li>
+						<li> • <a href="#"></a></li>
+					</ul>
+				</div>
+				<div class="Tips">
+					<!--友情链接-->
+					<h2>友情链接</h2>
+					<ul>
+						<li><a href="https://www.yezismile.com/">叶子博客</a></li>
+						<li><a href="http://www.w3school.com.cn/index.html">W3school</a></li>
+						<li><a href="http://www.runoob.com/">菜鸟教程</a></li>
+						<li><a href="http://www.viphper.com/">PHP学习网</a></li>
+						<li><a href="#"></a></li>
+					</ul>
+				</div>
+			</div>
+		</div>
+		
+	</body>
+</html>
