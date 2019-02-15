@@ -3,114 +3,17 @@
 
 	<head>
 		<meta charset="utf-8">
-		<title>用户管理</title>
+		<title>订单管理</title>
 		<link rel="stylesheet" href="css/bootstrap.min.css" />
 		<link rel="stylesheet" href="css/style.css" />
 		<script src="js/jquery.min.js"></script>
 		<script src="js/bootstrap.min.js"></script>
 		<script type="text/javascript" src="js/ajax.js"></script>
-
 		<script src="https://cdn.bootcss.com/moment.js/2.18.1/moment-with-locales.min.js"></script>
 		<link href="https://cdn.bootcss.com/bootstrap-datetimepicker/4.17.47/css/bootstrap-datetimepicker.min.css" rel="stylesheet">
 		<script src="https://cdn.bootcss.com/bootstrap-datetimepicker/4.17.47/js/bootstrap-datetimepicker.min.js"></script>
 
-		<script>
-			window.onload = function() {
-
-				getpage(1);
-
-			}
-			//订单
-			function getpage(page){
-				
-				var urlOrder = "/testmr/Admin/Orders/GetPage?_dc=1548054604126&filter=%5B%7B%22type%22%3A%22string%22%2C%22field%22%3A%22orderStatus%22%2C%22value%22%3A%221%22%2C%22comparison%22%3A%22eq%22%7D%5D&page=" + 
-				page + "&start=0&limit=20&sort=%5B%7B%22property%22%3A%22OrderDate%22%2C%22direction%22%3A%22desc%22%7D%5D";
-
-				ajax(urlOrder, "get", function(txt) {
-					
-					var pageSize = 20;
-					var result = JSON.parse(txt.replace(/new\sDate\((\d+)\)/g, "$1"));
-					var tbody = document.getElementById('tbody');
-					tbody.innerHTML = "";
-					//订单
-					for(var i = 0; i < result.data.length; i++) {
-
-						var item = result.data[i];
-
-						var loginName = item.LoginName;
-						var userName = item.UserName;
-						if(loginName == null) {
-
-							loginName = "";
-						}
-						if(userName == null) {
-
-							userName = "";
-						}
-
-						var orderType = item.OrderType;
-						if(orderType == 1) {
-
-							orderType = "期货";
-						} else {
-							orderType = "补货";
-						}
-
-						var orderStatus = item.OrderStatus;
-						if(orderStatus == 0) {
-
-							orderStatus = "购物车";
-						} else if(orderStatus == 1) {
-
-							orderStatus = "已提交";
-						} else if(orderStatus == 2) {
-
-							orderStatus = "已审核";
-						} else if(orderStatus == 3) {
-
-							orderStatus = "返回购物车";
-						}
-						var tr = '<tr><td>' +
-							item.OrderNo + '</td><td>' +
-							item.OrderQty + '</td><td>' +
-							item.ChannelName + '</td><td>' +
-							orderType + '</td><td>' +
-							orderStatus + '</td><td>' +
-							item.OrderDate + '</td><td>' +
-							loginName + '</td><td>' +
-							userName + '</td><td><div role="presentation" class="dropdown"><button class=" btn btn-default dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">操作<span class="caret"></span></button><ul class="dropdown-menu"><li>' +
-							'<a href="javascript:void(0);" onclick="getEdit(' + item.Id + ')" role="button" class="compile">货品</a></li></ul></div></td></tr>';
-
-						tbody.innerHTML += tr;
-					}
-					var pageTotal = Math.ceil(result.total / pageSize);		//向上取整
-					//分页页头
-					var previous = '<li><a onclick="getpage(' + (page - 1) + ')" href="javascript:void(0);" aria-label="Previous"><span aria-hidden="true">&laquo;</span></a></li>';
-
-					if((page - 1) == 0) {
-
-						previous = '<li class="disabled"><span aria-label="Previous"><span aria-hidden="true">&laquo;</span></s></li>';
-					}			//当激活页面为首页时，禁用页头
-					//分页
-					var li = "";
-					for(var i = 1; i <= pageTotal; i++) {
-
-						var active = page == i ? 'class="active"' : '';
-
-						li += '<li ' + active + '><a onclick="getpage(' + i + ')" href="javascript:void(0);">' + i + '</a></li>';
-
-					}
-					//分页页尾
-					var next = '<li><a onclick="getpage(' + (page + 1) + ')" href="javascript:void(0);" aria-label="Next"><span aria-hidden="true">&raquo;</span></a></li>';
-
-					if(page == pageTotal) {
-
-						next = '<li class="disabled"><span aria-label="Previous"><span aria-hidden="true">&raquo;</span></s></li>';
-					}		//当激活页面  等于总页面，禁用页尾
-
-					document.getElementById('pageUl').innerHTML = previous + li + next;		//三者相加 ，即为分页  完美
-				})
-			}
+		<script type="text/javascript">
 			//调用模态框
 			function getEdit(id) {
 
@@ -167,16 +70,9 @@
 				})
 			}
 			//状态
-			function stateClick() {
+			function stateClick(s) {
 
 				var state = document.getElementById('state');
-
-				var size = state.options.length;
-
-				for(var i = 0; i < size; i++) {
-
-					state.options.remove(state.selectedIndex);
-				}
 
 				var urlState = "/testmr/Admin/Orders/GetItemDetails?code=order_status&_dc=1548506479271&page=1&start=0&limit=25&filter=%5B%7B%22property%22%3A%22ItemText%22%7D%5D";
 
@@ -190,12 +86,21 @@
 						var option = document.createElement('option');
 						option.innerHTML = item.ItemText;
 						option.value = item.ItemValue;
+						option.selected = item.ItemValue == s;
 						state.appendChild(option);
 					}
 				})
 			}
+
+			//日历转换
+			function dateForMatting(date) {
+
+				var d = new Date(date);
+				return d.getFullYear() + "-" + (d.getMonth() + 1) + "-" + d.getDate() + " " + d.getHours() + ":" + d.getMinutes() + ":" + d.getSeconds();
+
+			}
 			//查询按钮
-			function search() {
+			function searchData(page,s) {
 
 				var url = "/testmr/Admin/Orders/GetPage?_dc=1548508220291&filter=[";
 
@@ -203,26 +108,48 @@
 				var loginName = document.getElementById('user').value;
 				var mold = document.getElementById('mold').value;
 				var state = document.getElementById('state').value;
+				if(s!=undefined){
+					state=s;
+				}
+				
 				var shop = document.getElementById('shop').value;
 				var datetime = document.getElementById('datetime').value;
 				var date = document.getElementById('date').value;
-				
-				url += '{"type":"string","field":"orderNo","value":"' + orderNo + '","comparison":"eq"},';
-				url += '{"type":"string","field":"u.LoginName","value":"' + loginName + '","comparison":"eq"},';
-				url += '{"type":"string","field":"orderType","value":"' + mold + '","comparison":"eq"},';
-				url += '{"type":"string","field":"orderStatus","value":"' + 1 + '","comparison":"eq"},';
-				url += '{"type":"string","field":"c.Name,c.channelno","value":"' + shop + '","comparison":"eq"},';
-				url += '{"type":"string","field":"orderDate","value":"' + datetime + '","comparison":"eq"},';
-				url += '{"type":"string","field":"orderDate","value":"' + date + '","comparison":"eq"}]';
-				url += '&page=1&start=0&limit=20&sort=[{"property":"OrderDate","direction":"desc"}]';
 
-				"]";
+				if(orderNo.length > 0) {
+					url += '{"type":"string","field":"orderNo","value":"' + orderNo + '","comparison":"eq"}';
+				}
+				if(loginName.length > 0) {
+					url += '{"type":"string","field":"u.LoginName","value":"' + loginName + '","comparison":"eq"},';
 
-				console.log(url)
-				debugger
+				}
+				if(mold.length > 0) {
+					url += '{"type":"string","field":"orderType","value":"' + mold + '","comparison":"eq"},';
+
+				}
+				if(state > 0) {
+					url += '{"type":"string","field":"orderStatus","value":"' + state + '","comparison":"eq"},';
+
+				}
+				if(shop.length > 0) {
+					url += '{"type":"string","field":"c.Name,c.channelno","value":"' + shop + '","comparison":"eq"},';
+
+				}
+				if(datetime.length > 0) {
+					url += '{"type":"string","field":"orderDate","value":"' + datetime + '","comparison":"eq"},';
+				}
+				if(date.length > 0) {
+					url += '{"type":"string","field":"orderDate","value":"' + date + '","comparison":"eq"}]';
+
+				}
+
+				url += "]";
+
+				url += '&page=' + page + '&start=0&limit=20&sort=[{"property":"OrderDate","direction":"desc"}]';
 
 				ajax(url, "get", function(txt) {
 
+					var pageSize = 20;
 					var result = JSON.parse(txt.replace(/new\sDate\((\d+)\)/g, "$1"));
 					var tbody = document.getElementById('tbody');
 					tbody.innerHTML = "";
@@ -270,15 +197,55 @@
 							item.ChannelName + '</td><td>' +
 							orderType + '</td><td>' +
 							orderStatus + '</td><td>' +
-							item.OrderDate + '</td><td>' +
+							dateForMatting(item.OrderDate) + '</td><td>' +
 							loginName + '</td><td>' +
 							userName + '</td><td><div role="presentation" class="dropdown"><button class=" btn btn-default dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">操作<span class="caret"></span></button><ul class="dropdown-menu"><li>' +
 							'<a href="javascript:void(0);" onclick="getEdit(' + item.Id + ')" role="button" class="compile">货品</a></li><li><a href="javascript:void(0);" onclick="getDelete(' + item.Id + ')" role="button" class="delete" >删除</a></li></ul></div></td></tr>';
 
 						tbody.innerHTML += tr;
 					}
+					var pageTotal = Math.ceil(result.total / pageSize); //向上取整
+					//分页页头
+					var url = "/testmr/Admin/Orders/GetPage?_dc=1548508220291&filter=[";
+					var previous = '<li><a onclick="searchData(' + (page - 1) + ')" href="javascript:void(0);" aria-label="Previous"><span aria-hidden="true">&laquo;</span></a></li>';
+
+					if((page - 1) == 0) {
+
+						previous = '<li class="disabled"><span aria-label="Previous"><span aria-hidden="true">&laquo;</span></span></li>';
+					} //当激活页面为首页时，禁用页头
+					//分页
+					var li = "";
+					var hid = !1; //false
+					
+					for(var i = 1; i <= pageTotal; i++) {
+
+						var active = page == i ? 'class="active"' : '';
+
+						if((pageTotal <= 5) || (i == 1 || i == pageTotal)) {
+							
+							li += '<li ' + active + '><a onclick="getData(' + i + ')" href="javascript:void(0);">' + i + '</a></li>';
+							
+							hid = !0 ; //true  显示...
+						} else if(hid) {
+							
+							li += '<li><span>...</span></li>'
+							hid = !1 ; //false
+						}
+
+					}
+					//分页页尾
+					var next = '<li><a onclick="searchData(' + (page + 1) + ')" href="javascript:void(0);" aria-label="Next"><span aria-hidden="true">&raquo;</span></a></li>';
+
+					if(page == pageTotal) {
+
+						next = '<li class="disabled"><span aria-label="Previous"><span aria-hidden="true">&raquo;</span></span></li>';
+					} //当激活页面  等于总页面，禁用页尾
+
+					document.getElementById('pageUl').innerHTML = previous + li + next; //三者相加 ，即为分页  完美
 				})
+
 			}
+			
 			//日历控件
 			$(function() {
 				$("#datetime").datetimepicker({
@@ -289,6 +256,13 @@
 					format: 'YYYY-MM-DD',
 					locale: moment.locale('zh-cn')
 				});
+
+				var state=1;//已提交
+
+				stateClick(state);
+				searchData(1,state);
+				moldClick();
+
 			});
 		</script>
 	</head>
@@ -323,7 +297,7 @@
 								<span class="glyphicon glyphicon-user"></span> 报表 <span class="caret">
 							</a>
 							<ul class="dropdown-menu">
-								<li><a href="#">品类分析</a></li>
+								<li><a href="category.html">品类分析</a></li>
 								<li><a href="#">上市日期分析</a></li>
 								<li><a href="#">订单分析</a></li>
 							</ul>
@@ -407,7 +381,7 @@
 					<ul class="nav ">
 						<li>
 							<div class="input-group">
-								<button type="button" id="btn" onclick="search()" class="btn btn-primary" style="margin:0 15px;">查询</button>
+								<button type="button" id="btn" onclick="searchData(1)" class="btn btn-primary" style="margin:0 15px;">查询</button>
 							</div>
 						</li>
 					</ul>
@@ -428,7 +402,7 @@
 							<div class="col-sm-3">
 								<div class="input-group">
 									<span class="input-group-addon" id="sizing-addon3">类型</span>
-									<select id="mold" onclick="moldClick()" value="1" style="width: 100%;height: 34px;border: 1px solid #CCCCCC;">
+									<select id="mold" style="width: 100%;height: 34px;border: 1px solid #CCCCCC;">
 
 									</select>
 								</div>
@@ -436,8 +410,8 @@
 							<div class="col-sm-3">
 								<div class="input-group">
 									<span class="input-group-addon" id="sizing-addon3">状态</span>
-									<select id="state" onclick="stateClick()" style="width: 100%;height: 34px;border: 1px solid #CCCCCC;">
-										
+									<select id="state" style="width: 100%;height: 34px;border: 1px solid #CCCCCC;">
+
 									</select>
 								</div>
 							</div>
@@ -455,7 +429,7 @@
 								<div class="input-group">
 									<span class="input-group-addon" id="sizing-addon3">日期</span>
 									<div class='col-sm-12' style="position: relative;padding: 0;">
-										<input  type='text' class="form-control" id='datetime' />
+										<input type='text' class="form-control" id='datetime' />
 									</div>
 								</div>
 							</div>
@@ -489,7 +463,7 @@
 					</table>
 					<nav class="pull-right" aria-label="Page navigation">
 						<ul id="pageUl" class="pagination">
-							
+
 						</ul>
 					</nav>
 				</div>

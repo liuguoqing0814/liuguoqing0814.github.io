@@ -138,7 +138,7 @@
 					}
 
 					var pageTotal = Math.ceil(result.total / pageSize); //向上取整     有多少页
-					//分页页头
+					//上一页
 					var previous = '<li><a onclick="getData(' + (page - 1) + ')" href="javascript:void(0);" aria-label="Previous"><span aria-hidden="true">&laquo;</span></a></li>';
 
 					if((page - 1) == 0) {
@@ -154,7 +154,7 @@
 						li += '<li ' + active + '><a onclick="getData(' + i + ')" href="javascript:void(0);">' + i + '</a></li>';
 
 					}
-					//分页页尾
+					//下一页
 					var next = '<li><a onclick="getData(' + (page + 1) + ')" href="javascript:void(0);" aria-label="Next"><span aria-hidden="true">&raquo;</span></a></li>';
 
 					if(page == pageTotal) {
@@ -167,7 +167,7 @@
 			}
 			//角色
 			function loadRole(TeamId) {
-
+	
 				var Teamselect = document.getElementById('Teamselect');
 
 				var size = Teamselect.options.length;
@@ -269,7 +269,7 @@
 								<span class="glyphicon glyphicon-user"></span> 报表 <span class="caret">
 							</a>
 							<ul class="dropdown-menu">
-								<li><a href="#">品类分析</a></li>
+								<li><a href="category.html">品类分析</a></li>
 								<li><a href="#">上市日期分析</a></li>
 								<li><a href="order.html">订单分析</a></li>
 							</ul>

@@ -1,4 +1,4 @@
-function ajax(url,method,success,error){
+function ajax(url, method, success, sync) {
 
 	if(window.XMLHttpRequest) {
 
@@ -7,21 +7,28 @@ function ajax(url,method,success,error){
 		var oAjax = new ActiveXObject("Microsoft.XMLHTTP");
 	}
 
-	oAjax.open(method,url, true);
+	var s = true;
+	if(sync == undefined) {
+		s = true;
+	} else {
+		s = sync;
+	}
+
+	oAjax.open(method, url, s);
 
 	oAjax.send();
 
-	oAjax.onreadystatechange = function() { 
+	oAjax.onreadystatechange = function() {
 
-		if(oAjax.readyState == 4) { 
-			
-			if(oAjax.status == 200) { 
-				
+		if(oAjax.readyState == 4) {
+
+			if(oAjax.status == 200) {
+
 				success(oAjax.responseText);
 
 			} else {
 
-				error();
+				alert("ajax error:"+oAjax.status);
 
 			}
 		};

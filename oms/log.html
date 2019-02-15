@@ -3,7 +3,7 @@
 
 	<head>
 		<meta charset="utf-8">
-		<title>日志</title>
+		<title>日志管理</title>
 		<link rel="stylesheet" href="css/bootstrap.min.css" />
 		<link rel="stylesheet" href="css/style.css" />
 		<script src="js/jquery.min.js"></script>
@@ -15,16 +15,16 @@
 			}
 
 			function getData(page) {
+				var pageSize = 20; //定义一页多少行
 
 				var url = "/testmr/Admin/Log/GetPage?_dc=1547819831317&log_type=login&page=" +
-					page + "&start=0&limit=20&sort=%5B%7B%22property%22%3A%22UserName%22%2C%22direction%22%3A%22ASC%22%7D%5D";
+					page + "&start=0&limit=" + pageSize + "&sort=%5B%7B%22property%22%3A%22UserName%22%2C%22direction%22%3A%22ASC%22%7D%5D";
 
 				ajax(url, "get", function(txt) {
 
-					var pageSize = 20;		//定义一页多少行
-					var result = JSON.parse(txt.replace(/new\sDate\((\d+)\)/g, "$1"));		
+					var result = JSON.parse(txt.replace(/new\sDate\((\d+)\)/g, "$1"));
 					var tbody = document.getElementById('tbody');
-					tbody.innerHTML = "";		//循环清除tbody
+					tbody.innerHTML = ""; //循环清除tbody
 					for(var i = 0; i < result.data.length; i++) {
 
 						var jurnal = result.data[i];
@@ -35,24 +35,36 @@
 							jurnal.AddTime + '</td><td>' +
 							jurnal.Message + '</td></tr>';
 
-						tbody.innerHTML += tr;   //动态创建tr  
+						tbody.innerHTML += tr; //动态创建tr  
 
 					}
-					var pageTotal = Math.ceil(result.total / pageSize);		//向上取整
+					var pageTotal = Math.ceil(result.total / pageSize); //向上取整
 					//分页页头
 					var previous = '<li><a onclick="getData(' + (page - 1) + ')" href="javascript:void(0);" aria-label="Previous"><span aria-hidden="true">&laquo;</span></a></li>';
 
 					if((page - 1) == 0) {
 
-						previous = '<li class="disabled"><span aria-label="Previous"><span aria-hidden="true">&laquo;</span></s></li>';
-					}			//当激活页面为首页时，禁用页头
+						previous = '<li class="disabled"><span aria-label="Previous"><span aria-hidden="true">&laquo;</span></span></li>';
+					} //当激活页面为首页时，禁用页头
+					
 					//分页
 					var li = "";
+					var hid = !1; //false
+					
 					for(var i = 1; i <= pageTotal; i++) {
 
 						var active = page == i ? 'class="active"' : '';
 
-						li += '<li ' + active + '><a onclick="getData(' + i + ')" href="javascript:void(0);">' + i + '</a></li>';
+						if((pageTotal <= 5) || (i == 1 || i == pageTotal)) {
+							
+							li += '<li ' + active + '><a onclick="getData(' + i + ')" href="javascript:void(0);">' + i + '</a></li>';
+							
+							hid = !0 ; //true  显示...
+						} else if(hid) {
+							
+							li += '<li><span>...</span></li>'
+							hid = !1 ; //false
+						}
 
 					}
 					//分页页尾
@@ -60,10 +72,10 @@
 
 					if(page == pageTotal) {
 
-						next = '<li class="disabled"><span aria-label="Previous"><span aria-hidden="true">&raquo;</span></s></li>';
-					}		//当激活页面  等于总页面，禁用页尾
+						next = '<li class="disabled"><span aria-label="Previous"><span aria-hidden="true">&raquo;</span></span></li>';
+					} //当激活页面  等于总页面，禁用页尾
 
-					document.getElementById('pageUl').innerHTML = previous + li + next;		//三者相加 ，即为分页  完美
+					document.getElementById('pageUl').innerHTML = previous + li + next; //三者相加 ，即为分页  完美
 
 				})
 			}
@@ -100,7 +112,7 @@
 								<span class="glyphicon glyphicon-user"></span> 报表 <span class="caret">
 							</a>
 							<ul class="dropdown-menu">
-								<li><a href="#">品类分析</a></li>
+								<li><a href="category.html">品类分析</a></li>
 								<li><a href="#">上市日期分析</a></li>
 								<li><a href="#">订单分析</a></li>
 							</ul>
